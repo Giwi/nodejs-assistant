@@ -1,5 +1,5 @@
-import { EventEmitter } from 'events';
-import { ClientDuplexStream } from 'grpc';
+import {EventEmitter} from 'events';
+import {ClientDuplexStream} from 'grpc';
 import {
   AssistantLanguage,
   AssistantRequest,
@@ -8,7 +8,7 @@ import {
   mapAssistantRequestToAssistRequest,
   mapAssistResponseToAssistantResponse,
 } from './common';
-import { AssistRequest, AssistResponse } from './proto';
+import {AssistRequest, AssistResponse} from './proto';
 
 /**
  * Represents a conversation with the Assistant.
@@ -23,6 +23,7 @@ export class Conversation extends EventEmitter {
    * @param _deviceId - The device ID to use during this conversation.
    * @param _deviceModelId - The device model ID to use during this conversation.
    * @param locale - The locale to use during this conversation.
+   * @param html - HTML output
    * @constructor
    */
   constructor(
@@ -30,6 +31,7 @@ export class Conversation extends EventEmitter {
     protected _deviceId: string,
     protected _deviceModelId: string,
     public locale: AssistantLanguage,
+    public html: boolean,
   ) {
     super();
     this._setupEvents();
@@ -43,11 +45,12 @@ export class Conversation extends EventEmitter {
     const finalRequest = request.audio
       ? request
       : ({
-          deviceId: this._deviceId,
-          deviceModelId: this._deviceModelId,
-          locale: this.locale,
-          ...request,
-        } as AssistantRequest);
+        deviceId: this._deviceId,
+        deviceModelId: this._deviceModelId,
+        locale: this.locale,
+        html: this.html,
+        ...request,
+      } as AssistantRequest);
 
     return this.sendRawRequest(
       mapAssistantRequestToAssistRequest(finalRequest),
@@ -550,37 +553,57 @@ export declare interface Conversation {
     event: ConversationEvent,
     listener: (...args: any[]) => void,
   ): this;
+
   prependOnceListener(
     event: ConversationEvent,
     listener: (...args: any[]) => void,
   ): this;
+
   removeListener(
     event: ConversationEvent,
     listener: (...args: any[]) => void,
   ): this;
+
   removeAllListeners(event?: ConversationEvent): this;
+
   setMaxListeners(n: number): this;
+
   getMaxListeners(): number;
+
   listeners(event: ConversationEvent): Array<() => void>;
+
   rawListeners(event: ConversationEvent): Array<() => void>;
 
   emit(event: 'data', data: AssistantResponse): boolean;
+
   emit(event: 'action', action: unknown): boolean;
+
   emit(event: 'actionongoogle', actionOnGoogle: unknown): boolean;
+
   emit(event: 'audio', audio: Buffer): boolean;
+
   emit(event: 'conversationend', latestData: AssistantResponse): boolean;
+
   emit(event: 'message', text: string): boolean;
+
   emit(event: 'html', html: string): boolean;
+
   emit(event: 'volume', newVolume: number): boolean;
+
   emit(
     event: 'speechrecognition',
     speechRecognitionResults: AssistantSpeechRecognitionResult[],
   ): boolean;
+
   emit(event: 'utteranceend', latestData: AssistantResponse): boolean;
+
   emit(event: 'end'): boolean;
+
   emit(event: 'close'): boolean;
+
   emit(event: 'error', error: Error): boolean;
 
   eventNames(): ConversationEvent[];
+
   listenerCount(type: ConversationEvent): number;
 }

@@ -37,6 +37,7 @@ export class Assistant {
   public deviceModelId: string;
   private _endpoint = 'embeddedassistant.googleapis.com';
   private _client: EmbeddedAssistantInstance;
+  private html: boolean;
 
   /**
    * Creates a new connection with the assistant.
@@ -45,6 +46,7 @@ export class Assistant {
    * @param options.deviceId - The device ID to use in the conversations with the Assistant.
    * @param options.deviceModelId - The device model ID to use in the conversations with the Assistant.
    * @param options.locale - The locale to use in the conversations with the Assistant.
+   * @param options.html - HTML output
    * @constructor
    */
   constructor(
@@ -53,11 +55,13 @@ export class Assistant {
       deviceId: 'default',
       deviceModelId: 'default',
       locale: AssistantLanguage.ENGLISH,
+      html: false
     },
   ) {
     this.locale = options.locale;
     this.deviceId = options.deviceId;
     this.deviceModelId = options.deviceModelId;
+    this.html = options.html;
     this._client = this._createClient(credentials);
   }
 
@@ -78,6 +82,7 @@ export class Assistant {
       this.deviceId,
       this.deviceModelId,
       this.locale,
+      this.html,
       audioOutConfig,
     );
   }
@@ -104,6 +109,7 @@ export class Assistant {
       this.deviceId,
       this.deviceModelId,
       this.locale,
+      this.html,
       audioInConfig,
       audioOutConfig,
     );

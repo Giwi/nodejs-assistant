@@ -14,6 +14,7 @@ export interface AssistantOptions {
   locale: AssistantLanguage;
   deviceId: string;
   deviceModelId: string;
+  html: boolean;
 }
 
 export interface AssistantSpeechRecognitionResult {

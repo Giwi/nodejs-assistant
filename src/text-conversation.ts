@@ -21,6 +21,7 @@ export class TextConversation extends Conversation {
    * @param _deviceId - The device ID to use during this conversation.
    * @param _deviceModelId - The device model ID to use during this conversation.
    * @param locale - The locale to use during this conversation.
+   * @param html - HTML output
    * @param _audioOutConfig - The audio output configuration.
    * @constructor
    */
@@ -29,13 +30,14 @@ export class TextConversation extends Conversation {
     _deviceId: string,
     _deviceModelId: string,
     locale: AssistantLanguage,
+    html: boolean,
     private _audioOutConfig: AudioOutConfig = {
       encoding: AudioOutEncoding.LINEAR16,
       sampleRateHertz: 16000,
       volumePercentage: 100,
     },
   ) {
-    super(_stream, _deviceId, _deviceModelId, locale);
+    super(_stream, _deviceId, _deviceModelId, locale, html);
   }
 
   /**
@@ -49,6 +51,7 @@ export class TextConversation extends Conversation {
       deviceId: this._deviceId,
       deviceModelId: this._deviceModelId,
       locale: this.locale,
+      html: this.html,
       text,
     });
   }

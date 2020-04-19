@@ -21,6 +21,7 @@ export class AudioConversation extends Conversation {
    * @param _deviceId - The device ID to use during this conversation.
    * @param _deviceModelId - The device model ID to use during this conversation.
    * @param locale - The locale to use during this conversation.
+   * @param html - HTML output
    * @param audioInConfig - The audio input configuration.
    * @param audioOutConfig - The audio output configuration.
    * @constructor
@@ -30,10 +31,11 @@ export class AudioConversation extends Conversation {
     _deviceId: string,
     _deviceModelId: string,
     locale: AssistantLanguage,
+    html: boolean,
     audioInConfig: AudioInConfig,
     audioOutConfig: AudioOutConfig,
   ) {
-    super(_stream, _deviceId, _deviceModelId, locale);
+    super(_stream, _deviceId, _deviceModelId, locale, html);
     this.sendRequest({
       audioInConfig,
       audioOutConfig,
@@ -41,6 +43,7 @@ export class AudioConversation extends Conversation {
       deviceModelId: _deviceModelId,
       isNewConversation: true,
       locale,
+      html
     });
   }
 
